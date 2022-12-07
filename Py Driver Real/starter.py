@@ -34,7 +34,7 @@ def main():
 
     # Create the player data
     player = pygame.image.load("racecar.png").convert_alpha()
-    player = pygame.transform.smoothscale(player, (25, 25))
+    player = pygame.transform.smoothscale(player, (50, 50))
     player_rect = player.get_rect()
     player_mask = pygame.mask.from_surface(player)
 
@@ -52,6 +52,13 @@ def main():
     door_rect.center = (550, 150)
     door_mask = pygame.mask.from_surface(door)
 
+    start_screen = pygame.image.load("startscreen.png")
+    start_screen_size = start_screen.get_size()
+    start_screen_rect = start_screen.get_rect()
+    screen = pygame.display.set_mode(start_screen_size)  # create a screen
+    start_screen = start_screen.convert_alpha()
+    start_screen.set_colorkey((150, 150, 150))
+    start_screen_mask = pygame.mask.from_surface(start_screen)
     # The frame tells which sprite frame to draw
     frame_count = 0
 
@@ -70,18 +77,22 @@ def main():
     is_alive = True
 
     # Hide the arrow cursor and replace it with a sprite.
-    pygame.mouse.set_visible(False)
+    # pygame.mouse.set_visible(False)
 
     # This is the main game loop. In it, we must:
     # - check for events
     # - update the scene
     # - draw the scene
+    start_screen_click= False
     while is_alive:
         # Check events by looping over the list of events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_alive = False
-
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            start_screen_click = True
+        if start_screen_click == False:
+            screen.blit(start_screen, start_screen_rect)
         # Position the player to the mouse location
         pos = pygame.mouse.get_pos()
         player_rect.center = pos
@@ -95,7 +106,7 @@ def main():
             print("colliding with key")
 
         # Draw the background
-        screen.fill((150,150,150)) # This helps check if the image path is transparent
+        screen.fill((0,0,0)) # This helps check if the image path is transparent
         screen.blit(map, map_rect)
 
         # Draw the player character
@@ -103,10 +114,11 @@ def main():
         if not key_found:
             screen.blit(key, key_rect)
             screen.blit(door, door_rect)
+            screen.blit(start_screen,start_screen_rect)
 
 
         # Write some text to the screen. You can do something like this to show some hints or whatever you want.
-        label = myfont.render("By David!", True, (255,255,0))
+        label = myfont.render("By Luke and Derek!", True, (255,255,0))
         screen.blit(label, (20,20))
 
         # Every time through the loop, increase the frame count.
