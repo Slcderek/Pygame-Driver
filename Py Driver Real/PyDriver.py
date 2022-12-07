@@ -14,6 +14,7 @@ map_mask= pygame.mask.from_surface(map)
 racecar = pygame.image.load("racecar.png")
 racecar = pygame.transform.smoothscale(racecar, (55,55))
 racecar_rect = racecar.get_rect()
+racecar_mask = pygame.mask.from_surface(racecar)
 racecar_rects = []
 
 start = pygame.image.load("start.png")
@@ -23,8 +24,17 @@ start = pygame.transform.smoothscale(start, (30,30))
 trophy_image = pygame.image.load("trophy.png")
 trophy_image = pygame.transform.smoothscale(trophy_image, (30,30))
 trophy_rect = trophy_image.get_rect()
+trophy_mask = pygame.mask.from_surface(trophy_image)
 trophy_rect.center = (400, 200)
 pygame.key.set_repeat(1)
+
+def pixel_collision(mask1, rect1, mask2, rect2):
+    offset_x = rect2[0] - rect1[0]
+    offset_y = rect2[1] - rect1[1]
+    # See if the two masks at the offset are overlapping.
+    overlap = mask1.overlap(mask2, (offset_x, offset_y))
+    return overlap
+
 
 while True: #this is the GAME loop
     for event in pygame.event.get():
@@ -33,24 +43,20 @@ while True: #this is the GAME loop
             sys.exit()
         pos = pygame.mouse.get_pos()
         racecar_rect.center = pos
-    colliding = racecar_rect.colliderect(trophy_rect)
-    print("colliding", colliding)
-        #update positions
-    # x = random.randint(0, screen_width)
-    # y = random.randint(0, screen_height)
-    #
-    # new_rat_rect = rat.get_rect()
-    # new_rat_rect.center = (x, y)
-    # rat_rects.append(new_rat_rect)
-    # rat_rect.center = (x,y)
-    # rat_rect.move_ip(1,0)
+
+    if pixel_collision(racecar_mask, racecar_rect, map_mask, map_rect):
+        print("pixel collision")
+
+    if pixel_collision(racecar_mask, racecar_rect, trophy_mask, trophy_rect):
+        print("pixel collision")
+
     screen.fill( (0,0,0) ) #drawing everything
     screen.blit(map, map_rect)
     screen.blit(racecar, racecar_rect)
-
+    screen.blit(trophy_image,trophy_rect)
     # rat_rect.move_ip(1,0)
-    if not colliding:
-        screen.blit(trophy_image, trophy_rect)
+    # if not colliding:
+    #     screen.blit(trophy_image, trophy_rect)
     pygame.display.flip()
 
 
