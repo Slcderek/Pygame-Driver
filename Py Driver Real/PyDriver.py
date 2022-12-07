@@ -66,9 +66,6 @@ while True: #this is the GAME loop
     screen.blit(trophy_image,trophy_rect)
     if start_screen_click == False:
         screen.blit(start_screen, start_screen_rect)
-    # rat_rect.move_ip(1,0)
-    # if not colliding:
-    #     screen.blit(trophy_image, trophy_rect)
     pygame.display.flip()
 
 
