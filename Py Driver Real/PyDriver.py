@@ -7,7 +7,7 @@ start_screen = pygame.image.load("startscreen.png")
 start_screen_size = start_screen.get_size()
 screen_rect = start_screen.get_rect()
 screen = pygame.display.set_mode(start_screen_size) #create a screen
-start_screen = map.convert_alpha()
+start_screen = start_screen.convert_alpha()
 start_screen.set_colorkey((150, 150, 150))
 start_screen_mask= pygame.mask.from_surface(start_screen)
 
