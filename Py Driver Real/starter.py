@@ -2,7 +2,7 @@ import sys, pygame, math
 
 # Starter code for an adventure game. Written by David Johnson for CS 1400 University of Utah.
 
-# Finished game authors:
+# Finished game authors:Luke Witzel and Derek Tinoco
 #
 #
 
@@ -83,16 +83,13 @@ def main():
     # - check for events
     # - update the scene
     # - draw the scene
-    start_screen_click= False
+    start_screen_click = False
     while is_alive:
         # Check events by looping over the list of events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_alive = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            start_screen_click = True
-        if start_screen_click == False:
-            screen.blit(start_screen, start_screen_rect)
+
         # Position the player to the mouse location
         pos = pygame.mouse.get_pos()
         player_rect.center = pos
@@ -101,9 +98,13 @@ def main():
         if pixel_collision(player_mask, player_rect, map_mask, map_rect):
             print("colliding", frame_count) # Don't leave this in the game
 
+
         if not key_found and pixel_collision(player_mask, player_rect, key_mask, key_rect):
             key_found = True
             print("colliding with key")
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            start_screen_click = True
 
         # Draw the background
         screen.fill((0,0,0)) # This helps check if the image path is transparent
@@ -114,8 +115,9 @@ def main():
         if not key_found:
             screen.blit(key, key_rect)
             screen.blit(door, door_rect)
-            screen.blit(start_screen,start_screen_rect)
 
+        if not start_screen_click:
+            screen.blit(start_screen, start_screen_rect)
 
         # Write some text to the screen. You can do something like this to show some hints or whatever you want.
         label = myfont.render("By Luke and Derek!", True, (255,255,0))
@@ -130,6 +132,8 @@ def main():
         # This tries to force the loop to run at 30 fps
         clock.tick(33)
 
+        if start_screen_click == False:
+            screen.blit(start_screen, start_screen_rect)
     pygame.quit()
     sys.exit()
 
