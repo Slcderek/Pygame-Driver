@@ -12,7 +12,7 @@ map.set_colorkey((0, 0, 0))
 map_mask= pygame.mask.from_surface(map)
 
 racecar = pygame.image.load("racecar.png")
-racecar = pygame.transform.smoothscale(racecar, (80,80))
+racecar = pygame.transform.smoothscale(racecar, (55,55))
 racecar_rect = racecar.get_rect()
 racecar_rects = []
 
