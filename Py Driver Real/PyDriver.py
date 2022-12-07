@@ -1,5 +1,5 @@
 import sys, pygame, random
-from PyDRIVERObjects import *
+from DriverObjects import *
 pygame.init()
 screen_width = 800
 screen_height = 400
