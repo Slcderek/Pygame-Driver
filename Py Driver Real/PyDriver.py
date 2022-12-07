@@ -4,12 +4,12 @@ pygame.init()
 screen_width = 800
 screen_height = 400
 screen = pygame.display.set_mode((screen_width, screen_height)) #create a screen
-driver = pygame.image.load("sharky.png")
+rat = pygame.image.load("racecar.png")
 rat = pygame.transform.smoothscale(rat, (80,80))
 rat_rect = rat.get_rect()
 rat_rects = []
 
-friend_image = pygame.image.load("fishe.png")
+friend_image = pygame.image.load("racecar.png")
 friend_image = pygame.transform.smoothscale(friend_image, (90,90))
 friend_rect = friend_image.get_rect()
 friend_rect.center = (400, 200)
