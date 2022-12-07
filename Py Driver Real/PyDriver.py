@@ -43,7 +43,6 @@ def pixel_collision(mask1, rect1, mask2, rect2):
     return overlap
 
 start_screen_click = False
-
 while True: #this is the GAME loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
