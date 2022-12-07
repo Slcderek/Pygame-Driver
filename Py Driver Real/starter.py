@@ -62,6 +62,12 @@ def main():
     # The frame tells which sprite frame to draw
     frame_count = 0
 
+    game_over_screen = pygame.image.load("")
+    game_over_screen_size= game_over_screen.get_size()
+    game_over_screen_rect = game_over_screen.get_rect()
+
+
+
     # The clock helps us manage the frames per second of the animation
     clock = pygame.time.Clock()
 
@@ -97,11 +103,13 @@ def main():
         # See if we touch the maze walls
         if pixel_collision(player_mask, player_rect, map_mask, map_rect):
             print("colliding", frame_count) # Don't leave this in the game
+            screen.blit(game_over)
 
 
         if not key_found and pixel_collision(player_mask, player_rect, key_mask, key_rect):
             key_found = True
             print("colliding with key")
+
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True
