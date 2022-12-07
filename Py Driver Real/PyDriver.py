@@ -57,11 +57,15 @@ while True: #this is the GAME loop
 
     if pixel_collision(racecar_mask, racecar_rect, trophy_mask, trophy_rect):
         print("pixel collision")
-
+    start_screen_click = True
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        start_screen_click = False
     screen.fill( (0,0,0) ) #drawing everything
     screen.blit(map, map_rect)
     screen.blit(racecar, racecar_rect)
     screen.blit(trophy_image,trophy_rect)
+    if start_screen_click == True:
+        screen.blit(start_screen, start_screen_rect)
     # rat_rect.move_ip(1,0)
     # if not colliding:
     #     screen.blit(trophy_image, trophy_rect)
