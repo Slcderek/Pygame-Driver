@@ -1,4 +1,3 @@
-import sys, pygame, random
 import pygame
 from DriverObjects import *
 pygame.init()
