@@ -18,8 +18,8 @@ trophy_image = pygame.image.load("trophy.png")
 trophy_image = pygame.transform.smoothscale(trophy_image, (30,30))
 trophy_rect = trophy_image.get_rect()
 trophy_rect.center = (400, 200)
-
 pygame.key.set_repeat(1)
+
 while True: #this is the GAME loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
