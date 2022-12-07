@@ -14,6 +14,10 @@ racecar = pygame.transform.smoothscale(racecar, (80,80))
 racecar_rect = racecar.get_rect()
 racecar_rects = []
 
+start = pygame.image.load("start")
+start = pygame.trnasform.smoothscale(start, (30,30))
+# start_re
+
 trophy_image = pygame.image.load("trophy.png")
 trophy_image = pygame.transform.smoothscale(trophy_image, (30,30))
 trophy_rect = trophy_image.get_rect()
