@@ -83,7 +83,7 @@ def main():
     # - check for events
     # - update the scene
     # - draw the scene
-    start_screen_click= False
+    start_screen_click = False
     while is_alive:
         # Check events by looping over the list of events
         for event in pygame.event.get():
@@ -96,7 +96,8 @@ def main():
         # Position the player to the mouse location
         pos = pygame.mouse.get_pos()
         player_rect.center = pos
-
+        # if start_screen_click == True:
+        #     screen.blit(map, map_rect)
         # See if we touch the maze walls
         if pixel_collision(player_mask, player_rect, map_mask, map_rect):
             print("colliding", frame_count) # Don't leave this in the game
