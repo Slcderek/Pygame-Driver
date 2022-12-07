@@ -16,6 +16,8 @@ def pixel_collision(mask1, rect1, mask2, rect2):
     overlap = mask1.overlap(mask2, (offset_x, offset_y))
     return overlap != None
 
+# def level1
+
 def main():
 
     # Initialize pygame
@@ -63,9 +65,9 @@ def main():
     frame_count = 0
 
     game_over_screen = pygame.image.load("gameover.png")
-    game_over_screen_size= game_over_screen.get_size()
     game_over_screen_rect = game_over_screen.get_rect()
-
+    game_over_screen = game_over_screen.convert_alpha()
+    game_over_screen = pygame.transform.smoothscale(game_over_screen, (map_size))
 
 
 
@@ -84,13 +86,16 @@ def main():
     is_alive = True
 
     # Hide the arrow cursor and replace it with a sprite.
-    # pygame.mouse.set_visible(False)
+    pygame.mouse.set_visible(False)
 
     # This is the main game loop. In it, we must:
     # - check for events
     # - update the scene
     # - draw the scene
     start_screen_click = False
+    is_game_over = False
+
+
     while is_alive:
         # Check events by looping over the list of events
         for event in pygame.event.get():
@@ -100,34 +105,50 @@ def main():
         # Position the player to the mouse location
         pos = pygame.mouse.get_pos()
         player_rect.center = pos
-        # if start_screen_click == True:
-        #     screen.blit(map, map_rect)
+
         # See if we touch the maze walls
-        if pixel_collision(player_mask, player_rect, map_mask, map_rect):
-            print("colliding", frame_count) # Don't leave this in the game
-            screen.blit(game_over_screen, game_over_screen_rect)
+
+        #if started logic happens
+        if start_screen_click == True:
+
+            screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+            screen.blit(map, map_rect)
+            screen.blit(player, player_rect)
+
+            if not key_found:
+                screen.blit(key, key_rect)
+                screen.blit(door, door_rect)
+
+            if pixel_collision(player_mask, player_rect, map_mask, map_rect):
+                print("colliding", frame_count) # Don't leave this in the game
+                is_game_over = True
+
+            if not key_found and pixel_collision(player_mask, player_rect, key_mask, key_rect):
+                key_found = True
+                print("colliding with key")
+
+            if is_game_over == True:
+                screen.blit(game_over_screen, game_over_screen_rect)
 
 
-        if not key_found and pixel_collision(player_mask, player_rect, key_mask, key_rect):
-            key_found = True
-            print("colliding with key")
 
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True
 
         # Draw the background
-        screen.fill((0,0,0)) # This helps check if the image path is transparent
-        screen.blit(map, map_rect)
+        # screen.fill((0,0,0)) # This helps check if the image path is transparent
+        # screen.blit(map, map_rect)
 
-        # Draw the player character
-        screen.blit(player, player_rect)
-        if not key_found:
-            screen.blit(key, key_rect)
-            screen.blit(door, door_rect)
+        # # Draw the player character
+        # screen.blit(player, player_rect)
+        # if not key_found:
+        #     screen.blit(key, key_rect)
+        #     screen.blit(door, door_rect)
 
         if not start_screen_click:
             screen.blit(start_screen, start_screen_rect)
+
 
         # Write some text to the screen. You can do something like this to show some hints or whatever you want.
         label = myfont.render("By Luke and Derek!", True, (255,255,0))
