@@ -1,5 +1,5 @@
 # Example pygame program
-
+from pygame import *
 import sys, pygame, random
 #classes define the behavir of an object.
 #class and object are interchangable
