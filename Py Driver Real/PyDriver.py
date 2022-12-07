@@ -8,14 +8,16 @@ map_size = map.get_size()
 map_rect = map.get_rect()
 screen = pygame.display.set_mode(map_size) #create a screen
 map = map.convert_alpha()
+map.set_colorkey((0, 0, 0))
+map_mask= pygame.mask.from_surface(map)
 
 racecar = pygame.image.load("racecar.png")
 racecar = pygame.transform.smoothscale(racecar, (80,80))
 racecar_rect = racecar.get_rect()
 racecar_rects = []
 
-start = pygame.image.load("start")
-start = pygame.trnasform.smoothscale(start, (30,30))
+start = pygame.image.load("start.png")
+start = pygame.transform.smoothscale(start, (30,30))
 # start_rek
 
 trophy_image = pygame.image.load("trophy.png")
@@ -42,7 +44,7 @@ while True: #this is the GAME loop
     # rat_rects.append(new_rat_rect)
     # rat_rect.center = (x,y)
     # rat_rect.move_ip(1,0)
-    screen.fill( (30,90,100) ) #drawing everything
+    screen.fill( (0,0,0) ) #drawing everything
     screen.blit(map, map_rect)
     screen.blit(racecar, racecar_rect)
 
