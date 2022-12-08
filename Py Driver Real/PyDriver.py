@@ -127,7 +127,7 @@ def main():
             screen.blit(player, player_rect)
             starter_screen = False
             screen.blit(door, door_rect)
-            # put a button here that will set start_flag_clicked to true
+            # put something here that will set start_flag_clicked to true once clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if screen.blit(door, door_rect).collidepoint(pos):
@@ -135,20 +135,6 @@ def main():
 
         #this is where the fun begins (the game)
         if start_flag_clicked == True:
-            screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-            screen.blit(map, map_rect)
-            screen.blit(player, player_rect)
-
-            if not key_found:
-                screen.blit(key, key_rect)
-                screen.blit(door, door_rect)
-
-            if pixel_collision(player_mask, player_rect, map_mask, map_rect):
-                print("colliding", frame_count) # Don't leave this in the game
-                is_game_over = True
-
-                if is_game_over == True:
-                    screen.blit(game_over_screen, game_over_screen_rect)
             if start_flag_clicked == True:
                 screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                 screen.blit(map, map_rect)
