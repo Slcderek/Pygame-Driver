@@ -73,8 +73,9 @@ def main():
     game_started = False
 
     starter_screen = True
-    first_level = True
-    second_level = True
+    first_level = False
+    second_level = False
+    third_level = False
 
 
     # The clock helps us manage the frames per second of the animation
@@ -135,16 +136,34 @@ def main():
 
         #this is where the fun begins (the game)
         if start_flag_clicked == True:
-            if start_flag_clicked == True:
                 screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                 screen.blit(map, map_rect)
                 screen.blit(player, player_rect)
                 if pixel_collision(player_mask, player_rect, map_mask, map_rect):
                     print("colliding", frame_count)  # Don't leave this in the game
+                    #LUKE FIX THIS PLEASE, TEST THIS OUT
                     is_game_over = True
                     if is_game_over == True:
                         screen.blit(game_over_screen, game_over_screen_rect)
-
+                #start working here, I need you to add a finish line maybe
+                # if pixel_collision(player_mask,player_rect, FINISHLINE, FINISHLINE_RECT)
+                #     print('congrats! You've passed the first level')
+                #     second_level = true:
+                #don't even touch this code till you've finished stuff above level 1
+                if second_level  == True:
+                    screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+                    # screen.blit(map2, map_rect2)
+                    screen.blit(player, player_rect)
+                    # if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
+                    #     print("colliding", frame_count)
+                    #     is_game_over = True
+                    #     if is_game_over == True:
+                    #         screen.blit(game_over_screen, game_over_screen_rect)
+                        # if pixel_collision(player_mask, player_rect, FINISHLINE, FINISHLINE_RECT)
+                    #     print('congrats! You've passed the third level')
+                    #     third_level = true:
+                if third_level == True:
+                    pass
 
 
         if event.type == pygame.MOUSEBUTTONDOWN:
