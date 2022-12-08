@@ -41,7 +41,7 @@ def main():
     player_mask = pygame.mask.from_surface(player)
 
     # Create the key
-    key = pygame.image.load("trophy.png").convert_alpha()
+    key = pygame.image.load("start.png").convert_alpha()
     key = pygame.transform.smoothscale(key, (40, 40))
     key_rect = key.get_rect()
     key_rect.center = (300, 450)
@@ -75,41 +75,7 @@ def main():
     starter_screen = True
     first_level = True
     second_level = True
-    class button():
-        def __init__(self, x, y , image):
-            self.image = image
-            self.rect = self.image.get_rect()
-            self.rect.topleft = (x, y)
-            self.clicked = False
-        def draw(self):
-            screen.blit(self.image, (self.rect.x, self.rect.y))
 
-            pos = pygame.mouse.get_pos()
-
-            if self.rect.collidepoint(pos):
-                if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                    self.clicked = True
-                    start_flag_clicked = True
-
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.clicked = False
-
-                # draw button on screen
-        def click(self, event):
-            x, y = pygame.mouse.get_pos()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if pygame.mouse.get_pressed()[0]:
-                    if self.rect.collidepoint(x, y):
-                        self.start_flag_clicked=True
-
-                # return start_flag_clicked
-    class starter_screen():
-        def __init__(self,x, y, image):
-            self.image = image
-            self.rect = self.image.get_rect()
-            self.rect.center = (x, y)
-#create button instances
-    start_button = button(100,100, start_flag)
 
     # The clock helps us manage the frames per second of the animation
     clock = pygame.time.Clock()
@@ -160,9 +126,12 @@ def main():
             screen.blit(map, map_rect)
             screen.blit(player, player_rect)
             starter_screen = False
+            screen.blit(key, key_rect)
+            screen.blit(door, door_rect)
             # put a button here that will set start_flag_clicked to true
-            if start_button.draw():
-                if pygame.mouse.get_pressed()[0] == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if screen.blit(door, door_rect).collidepoint(pos):
                     start_flag_clicked = True
 
         #this is where the fun begins (the game)
