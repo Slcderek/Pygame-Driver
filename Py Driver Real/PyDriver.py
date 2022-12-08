@@ -49,9 +49,9 @@ def main():
 
     # Create the door
     door = pygame.image.load("start.png").convert_alpha()
-    door = pygame.transform.smoothscale(door, (200, 200))
+    door = pygame.transform.smoothscale(door, (50, 50))
     door_rect = door.get_rect()
-    door_rect.center = (550, 150)
+    door_rect.center = (290, 300)
     door_mask = pygame.mask.from_surface(door)
 
     start_screen = pygame.image.load("startscreen.png")
@@ -136,30 +136,28 @@ def main():
 
         #this is where the fun begins (the game)
         if start_flag_clicked == True:
-            break
-            # screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-            # screen.blit(map, map_rect)
-            # screen.blit(player, player_rect)
-            #
-            # if not key_found:
-            #     screen.blit(key, key_rect)
-            #     screen.blit(door, door_rect)
-            #
-            # if pixel_collision(player_mask, player_rect, map_mask, map_rect):
-            #     print("colliding", frame_count) # Don't leave this in the game
-            #     is_game_over = True
-            #
-            # if not key_found and pixel_collision(player_mask, player_rect, key_mask, key_rect):
-            #     key_found = True
-            #     print("colliding with key")
-            #
-            # if is_game_over == True:
-            #     pass
-                # screen.blit(game_over_screen, game_over_screen_rect)
-            # if start_flag_clicked == True:
-            #     screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-            #     screen.blit(map, map_rect)
-            #     screen.blit(player, player_rect)
+            screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+            screen.blit(map, map_rect)
+            screen.blit(player, player_rect)
+
+            if not key_found:
+                screen.blit(key, key_rect)
+                screen.blit(door, door_rect)
+
+            if pixel_collision(player_mask, player_rect, map_mask, map_rect):
+                print("colliding", frame_count) # Don't leave this in the game
+                is_game_over = True
+
+            if not key_found and pixel_collision(player_mask, player_rect, key_mask, key_rect):
+                key_found = True
+                print("colliding with key")
+
+            if is_game_over == True:
+                screen.blit(game_over_screen, game_over_screen_rect)
+            if start_flag_clicked == True:
+                screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+                screen.blit(map, map_rect)
+                screen.blit(player, player_rect)
 
 
 
