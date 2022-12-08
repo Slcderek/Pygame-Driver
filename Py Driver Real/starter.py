@@ -69,6 +69,8 @@ def main():
     game_over_screen = game_over_screen.convert_alpha()
     game_over_screen = pygame.transform.smoothscale(game_over_screen, (map_size))
 
+    def button(screen,position,text):
+        pass
 
 
     # The clock helps us manage the frames per second of the animation
@@ -136,6 +138,7 @@ def main():
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True
 
+
         # Draw the background
         # screen.fill((0,0,0)) # This helps check if the image path is transparent
         # screen.blit(map, map_rect)
@@ -148,6 +151,7 @@ def main():
 
         if not start_screen_click:
             screen.blit(start_screen, start_screen_rect)
+        # if start_screen_click:
 
 
         # Write some text to the screen. You can do something like this to show some hints or whatever you want.
