@@ -54,6 +54,12 @@ def main():
     door_rect.center = (290, 300)
     door_mask = pygame.mask.from_surface(door)
 
+    finish_line = pygame.image.load("finishline.png").convert_alpha()
+    finish_line = pygame.transform.smoothscale(finish_line, (100, 100))
+    finish_line_rect = finish_line.get_rect()
+    finish_line_rect.center = (325, 240)
+    finish_line_mask = pygame.mask.from_surface(finish_line)
+
     start_screen = pygame.image.load("startscreen.png")
     start_screen_size = start_screen.get_size()
     start_screen_rect = start_screen.get_rect()
@@ -139,16 +145,16 @@ def main():
                 screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                 screen.blit(map, map_rect)
                 screen.blit(player, player_rect)
+                screen.blit(finish_line, finish_line_rect)
                 if pixel_collision(player_mask, player_rect, map_mask, map_rect):
                     print("colliding", frame_count)  # Don't leave this in the game
                     #LUKE FIX THIS PLEASE, TEST THIS OUT
                     is_game_over = True
                     if is_game_over == True:
                         screen.blit(game_over_screen, game_over_screen_rect)
-                #start working here, I need you to add a finish line maybe
-                # if pixel_collision(player_mask,player_rect, FINISHLINE, FINISHLINE_RECT)
-                #     print('congrats! You've passed the first level')
-                #     second_level = true:
+                if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect):
+                    print("congrats! You've passed the first level")
+                    second_level = True
                 #don't even touch this code till you've finished stuff above level 1
                 if second_level  == True:
                     screen.fill((0, 0, 0))  # This helps check if the image path is transparent
