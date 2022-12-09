@@ -54,6 +54,7 @@ def main():
     safety_car = pygame.transform.smoothscale(player, (50, 50))
     safety_car_rect = safety_car.get_rect()
     safety_car_mask = pygame.mask.from_surface(safety_car)
+
     # Create the key
     key = pygame.image.load("start.png").convert_alpha()
     key = pygame.transform.smoothscale(key, (40, 40))
@@ -89,7 +90,6 @@ def main():
     game_over_screen = game_over_screen.convert_alpha()
     game_over_screen = pygame.transform.smoothscale(game_over_screen, (map_size))
 
-    start_flag = pygame.image.load('start.png').convert_alpha()
     game_started = False
 
     starter_screen = True
@@ -105,10 +105,7 @@ def main():
     # I will see if I can find a fix.
     myfont = pygame.font.SysFont('monospace', 24)
 
-    # The started variable records if the start color has been clicked and the level started
-    started = False
 
-    key_found = False
     # The is_alive variable records if anything bad has happened (off the path, touch guard, etc.)
     is_alive = True
 
