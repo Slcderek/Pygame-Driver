@@ -86,7 +86,7 @@ def main():
     oil = pygame.image.load("oil.png").convert_alpha()
     oil = pygame.transform.smoothscale(oil, (200, 200))
     oil_rect = door.get_rect()
-    oil_rect.center = (800, 400)
+    oil_rect.center = (640, 400)
     oil_mask = pygame.mask.from_surface(oil)
 
     finish_line = pygame.image.load("finishline.png").convert_alpha()
@@ -221,15 +221,16 @@ def main():
                     second_level_start = False
                     screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                     screen.blit(map2, map2_rect)
-                    screen.blit(player, player_rect)
                     screen.blit(oil, oil_rect)
+                    screen.blit(player, player_rect)
                     if touch_cement == False:
                         screen.blit(cement, cement_rect)
-                    screen.blit(level_1_hint, (300, 600))
+                    screen.blit(level_2_hint, (300, 600))
                     if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
                         is_game_over = True
-                    if pixel_collision(player_mask, player_rect, oil_mask, oil_rect):
-                        is_game_over = True
+                    if not touch_cement:
+                        if pixel_collision(player_mask, player_rect, oil_mask, oil_rect):
+                            is_game_over = True
                     if is_game_over == True:
                         screen.blit(game_over_screen, game_over_screen_rect)
                         touch_cement = None
@@ -280,6 +281,7 @@ def main():
         screen.blit(label, (20,20))
 
         level_1_hint = myfont.render("hint:collect the gas and then finish the race!", True, (0,0,0))
+        level_2_hint = myfont.render("hint:cement dust soaks up oil! ", True, (0, 0, 0))
         # Every time through the loop, increase the frame count.
         frame_count += 1
 
