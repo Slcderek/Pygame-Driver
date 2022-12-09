@@ -34,12 +34,26 @@ def main():
     map.set_colorkey((0, 0, 0))
     map_mask = pygame.mask.from_surface(map)
 
+    #map 2
+    map2 = pygame.image.load("background2.png")
+    # Store window width and height in different forms for easy access
+    map2_size = map2.get_size()
+    map2_rect = map2.get_rect()
+    screen = pygame.display.set_mode(map2_size)
+    map2 = map2.convert_alpha()
+    map2.set_colorkey((0, 0, 0))
+    map2_mask = pygame.mask.from_surface(map2)
+
     # Create the player data
     player = pygame.image.load("racecar.png").convert_alpha()
     player = pygame.transform.smoothscale(player, (50, 50))
     player_rect = player.get_rect()
     player_mask = pygame.mask.from_surface(player)
-
+    #safetycar data
+    safety_car = pygame.image.load("safetycar.png").convert_alpha()
+    safety_car = pygame.transform.smoothscale(player, (50, 50))
+    safety_car_rect = safety_car.get_rect()
+    safety_car_mask = pygame.mask.from_surface(safety_car)
     # Create the key
     key = pygame.image.load("start.png").convert_alpha()
     key = pygame.transform.smoothscale(key, (40, 40))
@@ -106,8 +120,9 @@ def main():
     # - update the scene
     # - draw the scene
     start_screen_click = False
-    start_flag_clicked = False
+    first_start_flag_clicked = False
     is_game_over = False
+    second_start_flag_clicked = False
 
     while is_alive:
         # Check events by looping over the list of events
@@ -138,28 +153,41 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if screen.blit(door, door_rect).collidepoint(pos):
-                    start_flag_clicked = True
+                    first_start_flag_clicked = True
 
         #this is where the fun begins (the game)
-        if start_flag_clicked == True:
+        if first_start_flag_clicked == True:
+                count = 0
                 screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                 screen.blit(map, map_rect)
                 screen.blit(player, player_rect)
                 screen.blit(finish_line, finish_line_rect)
                 if pixel_collision(player_mask, player_rect, map_mask, map_rect):
                     print("colliding", frame_count)  # Don't leave this in the game
-                    #LUKE FIX THIS PLEASE, TEST THIS OUT
+                    count += 1
                     is_game_over = True
-                    if is_game_over == True:
+                if is_game_over == True:
                         screen.blit(game_over_screen, game_over_screen_rect)
+
+
+
                 if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect):
                     print("congrats! You've passed the first level")
+                    start_flag_clicked1 = False
                     second_level = True
                 #don't even touch this code till you've finished stuff above level 1
                 if second_level  == True:
                     screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-                    # screen.blit(map2, map_rect2)
+                    screen.blit(map2, map2_rect)
                     screen.blit(player, player_rect)
+                    screen.blit(door, door_rect)
+                    # put something here that will set start_flag_clicked to true once clicked
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        if screen.blit(door, door_rect).collidepoint(pos):
+                            second_start_flag_clicked = True
+                        if second_start_flag_clicked == True:
+                            break
                     # if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
                     #     print("colliding", frame_count)
                     #     is_game_over = True
@@ -170,7 +198,6 @@ def main():
                     #     third_level = true:
                 if third_level == True:
                     pass
-
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True

@@ -39,7 +39,11 @@ def main():
     player = pygame.transform.smoothscale(player, (50, 50))
     player_rect = player.get_rect()
     player_mask = pygame.mask.from_surface(player)
-
+    #safetycar data
+    safety_car = pygame.image.load("safetycar.png").convert_alpha()
+    safety_car = pygame.transform.smoothscale(player, (50, 50))
+    safety_car_rect = safety_car.get_rect()
+    safety_car_mask = pygame.mask.from_surface(safety_car)
     # Create the key
     key = pygame.image.load("trophy.png").convert_alpha()
     key = pygame.transform.smoothscale(key, (40, 40))
@@ -69,8 +73,6 @@ def main():
     game_over_screen = game_over_screen.convert_alpha()
     game_over_screen = pygame.transform.smoothscale(game_over_screen, (map_size))
 
-    def button(screen,position,text):
-        pass
 
 
     # The clock helps us manage the frames per second of the animation
@@ -130,6 +132,7 @@ def main():
                 print("colliding with key")
 
             if is_game_over == True:
+                is_game_over = True
                 screen.blit(game_over_screen, game_over_screen_rect)
 
 
