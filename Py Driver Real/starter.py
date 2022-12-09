@@ -76,6 +76,18 @@ def main():
     door_rect = door.get_rect()
     door_rect.center = (290, 300)
     door_mask = pygame.mask.from_surface(door)
+    #cement
+    cement = pygame.image.load("cement.png").convert_alpha()
+    cement = pygame.transform.smoothscale(cement, (50, 50))
+    cement_rect = cement.get_rect()
+    cement_rect.center = (600, 450)
+    cement_mask = pygame.mask.from_surface(cement)
+    #oil
+    oil = pygame.image.load("oil.png").convert_alpha()
+    oil = pygame.transform.smoothscale(oil, (50, 50))
+    oil_rect = door.get_rect()
+    oil_rect.center = (350, 400)
+    oil_mask = pygame.mask.from_surface(oil)
 
     finish_line = pygame.image.load("finishline.png").convert_alpha()
     finish_line = pygame.transform.smoothscale(finish_line, (100, 100))
@@ -182,9 +194,9 @@ def main():
                     print("congrats! You've passed the first level")
                     start_flag_clicked1 = False
                     second_level = True
+                    touch_gas = False
                 #don't even touch this code till you've finished stuff above level 1
                 if second_level  == True:
-                    touch_gas = False
                     screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                     screen.blit(map2, map2_rect)
                     screen.blit(player, player_rect)
@@ -195,7 +207,8 @@ def main():
                         if screen.blit(door, door_rect).collidepoint(pos):
                             second_start_flag_clicked = True
                         if second_start_flag_clicked == True:
-                            break
+                            pass
+
                     # if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
                     #     print("colliding", frame_count)
                     #     is_game_over = True
