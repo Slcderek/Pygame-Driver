@@ -45,6 +45,16 @@ def main():
     map2.set_colorkey((0, 0, 0))
     map2_mask = pygame.mask.from_surface(map2)
 
+    #map 3
+    map3 = pygame.image.load("background3.png")
+    # Store window width and height in different forms for easy access
+    map3_size = map3.get_size()
+    map3_rect = map3.get_rect()
+    screen = pygame.display.set_mode(map2_size)
+    map3 = map3.convert_alpha()
+    map3.set_colorkey((0, 0, 0))
+    map3_mask = pygame.mask.from_surface(map3)
+
     # Create the player data
     player = pygame.image.load("racecar.png").convert_alpha()
     player = pygame.transform.smoothscale(player, (50, 50))
@@ -70,25 +80,25 @@ def main():
     key_rect.center = (300, 450)
     key_mask = pygame.mask.from_surface(key)
 
-    # Create the door
-    door = pygame.image.load("start.png").convert_alpha()
-    door = pygame.transform.smoothscale(door, (50, 50))
-    door_rect = door.get_rect()
-    door_rect.center = (290, 300)
-    door_mask = pygame.mask.from_surface(door)
-    #cement
+    # Create the starter game flag
+    starter_flag = pygame.image.load("start.png").convert_alpha()
+    starter_flag = pygame.transform.smoothscale(starter_flag, (50, 50))
+    starter_flag_rect = starter_flag.get_rect()
+    starter_flag_rect.center = (290, 300)
+    starter_flag_mask = pygame.mask.from_surface(starter_flag)
+    #creates the cement
     cement = pygame.image.load("cement.png").convert_alpha()
     cement = pygame.transform.smoothscale(cement, (100, 100))
     cement_rect = cement.get_rect()
     cement_rect.center = (350, 530)
     cement_mask = pygame.mask.from_surface(cement)
-    #oil
+    #creates the oil
     oil = pygame.image.load("oil.png").convert_alpha()
     oil = pygame.transform.smoothscale(oil, (100, 100))
-    oil_rect = door.get_rect()
+    oil_rect = oil.get_rect()
     oil_rect.center = (640, 550)
     oil_mask = pygame.mask.from_surface(oil)
-
+    #Creates the finish line
     finish_line = pygame.image.load("finishline.png").convert_alpha()
     finish_line = pygame.transform.smoothscale(finish_line, (100, 100))
     finish_line_rect = finish_line.get_rect()
@@ -109,13 +119,11 @@ def main():
     game_over_screen_rect = game_over_screen.get_rect()
     game_over_screen = game_over_screen.convert_alpha()
     game_over_screen = pygame.transform.smoothscale(game_over_screen, (map_size))
+    game_over_screen_mask = pygame.mask.from_surface(game_over_screen)
 
-    game_started = False
+
 
     starter_screen = True
-    first_level = False
-    second_level = False
-    third_level = False
 
 
     # The clock helps us manage the frames per second of the animation
@@ -137,7 +145,7 @@ def main():
     # - update the scene
     # - draw the scene
     start_screen_click = False
-    first_start_flag_clicked = False
+    first_starter_flag_clicked = False
     is_game_over = False
     second_start_flag_clicked = False
     second_level_start = False
@@ -174,15 +182,15 @@ def main():
             screen.blit(map, map_rect)
             screen.blit(player, player_rect)
             starter_screen = False
-            screen.blit(door, door_rect)
+            screen.blit(starter_flag, starter_flag_rect)
             # put something here that will set start_flag_clicked to true once clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                if screen.blit(door, door_rect).collidepoint(pos):
-                    first_start_flag_clicked = True
+                if screen.blit(starter_flag, starter_flag_rect).collidepoint(pos):
+                    first_starter_flag_clicked = True
 
         #this is where the fun begins (the game)
-        if first_start_flag_clicked == True:
+        if first_starter_flag_clicked == True:
                 screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                 screen.blit(map, map_rect)
                 screen.blit(player, player_rect)
@@ -194,65 +202,83 @@ def main():
                     touch_gas = None
                 if pixel_collision(player_mask, player_rect, gas_mask, gas_rect):
                     touch_gas = True
-                if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect):
+                if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect) and is_game_over == False:
                     print("congrats! You've passed the first level")
                     second_level_start = True
                     touch_gas = False
                     touch_cement = False
-                    first_start_flag_clicked = None
-        if second_level_start == True:
-            is_game_over = False
-            screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-            screen.blit(map2, map2_rect)
-            screen.blit(player, player_rect)
-            if second_start_flag_clicked == False:
-                screen.blit(door, door_rect)
-            # put something here that will set start_flag_clicked to true once clicked
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                if screen.blit(door, door_rect).collidepoint(pos):
-                    second_level = True
+
+        if second_level_start == True and is_game_over == False:
                     is_game_over = False
+                    first_starter_flag_clicked = None
+                    screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+                    screen.blit(map2, map2_rect)
+                    screen.blit(player, player_rect)
+                    if second_start_flag_clicked == False:
+                        screen.blit(starter_flag, starter_flag_rect)
+                    # put something here that will set start_flag_clicked to true once clicked
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        if screen.blit(starter_flag, starter_flag_rect).collidepoint(pos):
+                            second_level = True
+                            touch_gas = None
+        if second_level == True:
+                    start_screen_click = False
+                    screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+                    screen.blit(map2, map2_rect)
+                    screen.blit(oil, oil_rect)
+                    screen.blit(player, player_rect)
+                    screen.blit(level_2_hint, (300, 650))
+                    if touch_cement == False:
+                        screen.blit(cement, cement_rect)
+                        if pixel_collision(player_mask, player_rect, oil_mask, oil_rect):
+                            is_game_over = True
+                    if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
+                            is_game_over = True
+                            touch_cement = None
+                    if pixel_collision(player_mask, player_rect, cement_mask, cement_rect) and is_game_over == False:
+                            touch_cement = True
 
-            if second_level == True:
-                # first_start_flag_clicked = None
-                start_screen_click = False
-                screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-                screen.blit(map2, map2_rect)
-                screen.blit(oil, oil_rect)
-                screen.blit(player, player_rect)
-                screen.blit(level_2_hint, (300, 650))
-                if touch_cement == False:
-                    screen.blit(cement, cement_rect)
-                    if pixel_collision(player_mask, player_rect, oil_mask, oil_rect):
-                        is_game_over = True
-                if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
-                    is_game_over = True
-                    touch_cement = None
-                if pixel_collision(player_mask, player_rect, cement_mask, cement_rect):
-                    touch_cement = True
-
-            if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect):
-                print("congrats! You've passed the second level")
-                third_level_start = True
-                touch_cement = False
+                    if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect) and is_game_over == False:
+                        print("congrats! You've passed the second level")
+                        third_level_start = True
+                        touch_cement = False
+                        second_level = None
 
         if is_game_over == True:
             screen.blit(game_over_screen, game_over_screen_rect)
-            # second_start_flag_clicked = None
-            # second_level_start = None
-            second_level = None
-            third_start_flag_clicked = None
-            third_level_start = None
-            third_level = None
-            touch_gas = False
-            touch_cement = None
-            touch_trophy = None
 
-        if third_level_start == True:
-            pass
+
+        if third_level_start == True :
+            is_game_over = False
+            second_level_start = None
+            screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+            screen.blit(map3, map3_rect)
+            screen.blit(player, player_rect)
+            if third_start_flag_clicked == False:
+                screen.blit(starter_flag, starter_flag_rect)
+            # put something here that will set start_flag_clicked to true once clicked
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if screen.blit(starter_flag, starter_flag_rect).collidepoint(pos):
+                    third_level = True
+
+
         if third_level == True:
-            pass
+            start_screen_click = False
+            screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+            screen.blit(map3, map3_rect)
+            screen.blit(oil, oil_rect)
+            screen.blit(player, player_rect)
+            screen.blit(level_3_hint, (300, 650))
+            if touch_trophy == False:
+                screen.blit(key, key_rect)
+
+            if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
+                is_game_over = True
+                touch_trophy = None
+            if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect) and is_game_over == False:
+                print("congrats! You've passed all the levels")
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True
@@ -288,6 +314,7 @@ def main():
 
         level_1_hint = myfont.render("hint:collect the gas and then finish the race!", True, (0,0,0))
         level_2_hint = myfont.render("hint:cement dust can soak up oil!", True, (0,0,0))
+        level_3_hint = myfont.render("hint:Take what is rightfully yours and \n win the game!", True, (255, 255, 255))
         # Every time through the loop, increase the frame count.
         frame_count += 1
 
