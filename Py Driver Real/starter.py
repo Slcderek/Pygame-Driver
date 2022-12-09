@@ -207,7 +207,8 @@ def main():
                         if screen.blit(door, door_rect).collidepoint(pos):
                             second_start_flag_clicked = True
                         if second_start_flag_clicked == True:
-                            pass
+                            break
+
 
                     # if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
                     #     print("colliding", frame_count)
