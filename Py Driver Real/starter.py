@@ -99,9 +99,9 @@ def main():
 
     #creates the oil
     oil = pygame.image.load("oil.png").convert_alpha()
-    oil = pygame.transform.smoothscale(oil, (100, 100))
+    oil = pygame.transform.smoothscale(oil, (70, 70))
     oil_rect = oil.get_rect()
-    oil_rect.center = (640, 550)
+    oil_rect.center = (630, 550)
     oil_mask = pygame.mask.from_surface(oil)
 
     # creates the unscrambler
@@ -260,10 +260,8 @@ def main():
                         touch_cement = False
                         second_level = None
 
-        if is_game_over == True:
-            screen.blit(game_over_screen, game_over_screen_rect)
 
-
+        #checks if the third level has started yet, will happen only after clicking flag
         if third_level_start == True :
             is_game_over = False
             second_level_start = None
@@ -282,26 +280,27 @@ def main():
         if third_level == True:
             start_screen_click = False
             screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-            screen.blit(map4, map4_rect)
-            screen.blit(oil, oil_rect)
+            # screen.blit(map3, map3_rect)
             screen.blit(player, player_rect)
             screen.blit(level_3_hint, (300, 650))
-            if touch_trophy == False:
-                screen.blit(key, key_rect)
             if touch_unscrambler == False:
+                screen.blit(map4, map4_rect)
                 screen.blit(unscrambler, unscrambler_rect)
             if touch_unscrambler == True:
                 screen.blit(map3, map3_rect)
-                if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
-                    is_game_over = True
-                    touch_trophy = None
+                screen.blit(player, player_rect)
+            if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
+                is_game_over = True
+                touch_trophy = None
+            if pixel_collision(player_mask, player_rect, finish_line_mask,
+                finish_line_rect) and is_game_over == False:
+                print("congrats! You've passed all the levels")
+
             # if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
             #     is_game_over = True
             #     touch_trophy = None
             if screen.blit(unscrambler, unscrambler_rect).collidepoint(pos) and is_game_over == False:
                 touch_unscrambler = True
-            if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect) and is_game_over == False:
-                print("congrats! You've passed all the levels")
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True
@@ -313,28 +312,13 @@ def main():
         if touch_trophy == True:
             screen.blit(finish_line, finish_line_rect)
         if touch_unscrambler == True:
-            screen.blit(map3, map3_rect)
-            time.sleep(3)
-            if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
-                is_game_over = True
-                touch_trophy = None
+           screen.blit(finish_line, finish_line_rect)
 
 
+        #game over code here
+        if is_game_over == True:
+            screen.blit(game_over_screen, game_over_screen_rect)
 
-        # Draw the background
-        # screen.fill((0,0,0)) # This helps check if the image path is transparent
-        # screen.blit(map, map_rect)
-
-        # # Draw the player character
-        # screen.blit(player, player_rect)
-        # if not key_found:
-        #     screen.blit(key, key_rect)
-        #     screen.blit(door, door_rect)
-
-        # og start screen
-        # if not start_screen_click:
-        #     screen.blit(start_screen, start_screen_rect)
-        # if start_screen_click:
 
 
         # Write some text to the screen. You can do something like this to show some hints or whatever you want.
@@ -343,7 +327,7 @@ def main():
 
         level_1_hint = myfont.render("hint:collect the gas and then finish the race!", True, (0,0,0))
         level_2_hint = myfont.render("hint:cement dust can soak up oil!", True, (0,0,0))
-        level_3_hint = myfont.render("hint:The map must be unscrambled before being played\n but get to safety after driving over the button", True, (255, 255, 255))
+        level_3_hint = myfont.render("hint:The map must be unscrambled before it can be won\n but get to safety after driving over the button", True, (255, 255, 255))
         level_4_hint = myfont.render("hint:Take what is rightfully yours and \n win the game!", True, (255, 255, 255))
         # Every time through the loop, increase the frame count.
         frame_count += 1
