@@ -1,6 +1,7 @@
 import sys, pygame, math
-
 # Starter code for an adventure game. Written by David Johnson for CS 1400 University of Utah.
+
+
 
 # Finished game authors:Luke Witzel and Derek Tinoco
 #
@@ -34,6 +35,16 @@ def main():
     map.set_colorkey((0, 0, 0))
     map_mask = pygame.mask.from_surface(map)
 
+    #map 2
+    map2 = pygame.image.load("background2.png")
+    # Store window width and height in different forms for easy access
+    map2_size = map2.get_size()
+    map2_rect = map2.get_rect()
+    screen = pygame.display.set_mode(map2_size)
+    map2 = map2.convert_alpha()
+    map2.set_colorkey((0, 0, 0))
+    map2_mask = pygame.mask.from_surface(map2)
+
     # Create the player data
     player = pygame.image.load("racecar.png").convert_alpha()
     player = pygame.transform.smoothscale(player, (50, 50))
@@ -44,8 +55,16 @@ def main():
     safety_car = pygame.transform.smoothscale(player, (50, 50))
     safety_car_rect = safety_car.get_rect()
     safety_car_mask = pygame.mask.from_surface(safety_car)
+
+    # gas data
+    gas = pygame.image.load("gas.png").convert_alpha()
+    gas = pygame.transform.smoothscale(gas,(35,35))
+    gas_rect = gas.get_rect()
+    gas_mask = pygame.mask.from_surface(gas)
+    gas_rect.center = (650, 280)
+
     # Create the key
-    key = pygame.image.load("trophy.png").convert_alpha()
+    key = pygame.image.load("start.png").convert_alpha()
     key = pygame.transform.smoothscale(key, (40, 40))
     key_rect = key.get_rect()
     key_rect.center = (300, 450)
@@ -53,10 +72,16 @@ def main():
 
     # Create the door
     door = pygame.image.load("start.png").convert_alpha()
-    door = pygame.transform.smoothscale(door, (200, 200))
+    door = pygame.transform.smoothscale(door, (50, 50))
     door_rect = door.get_rect()
-    door_rect.center = (550, 150)
+    door_rect.center = (290, 300)
     door_mask = pygame.mask.from_surface(door)
+
+    finish_line = pygame.image.load("finishline.png").convert_alpha()
+    finish_line = pygame.transform.smoothscale(finish_line, (100, 100))
+    finish_line_rect = finish_line.get_rect()
+    finish_line_rect.center = (325, 240)
+    finish_line_mask = pygame.mask.from_surface(finish_line)
 
     start_screen = pygame.image.load("startscreen.png")
     start_screen_size = start_screen.get_size()
@@ -73,6 +98,12 @@ def main():
     game_over_screen = game_over_screen.convert_alpha()
     game_over_screen = pygame.transform.smoothscale(game_over_screen, (map_size))
 
+    game_started = False
+
+    starter_screen = True
+    first_level = False
+    second_level = False
+    third_level = False
 
 
     # The clock helps us manage the frames per second of the animation
@@ -82,10 +113,7 @@ def main():
     # I will see if I can find a fix.
     myfont = pygame.font.SysFont('monospace', 24)
 
-    # The started variable records if the start color has been clicked and the level started
-    started = False
 
-    key_found = False
     # The is_alive variable records if anything bad has happened (off the path, touch guard, etc.)
     is_alive = True
 
@@ -97,9 +125,10 @@ def main():
     # - update the scene
     # - draw the scene
     start_screen_click = False
+    first_start_flag_clicked = False
     is_game_over = False
-
-
+    second_start_flag_clicked = False
+    touch_gas = False
     while is_alive:
         # Check events by looping over the list of events
         for event in pygame.event.get():
@@ -113,33 +142,77 @@ def main():
         # See if we touch the maze walls
 
         #if started logic happens
-        if start_screen_click == True:
+        # This is before clicking the screen
+        if starter_screen == True:
+            if not start_screen_click:
+                screen.blit(start_screen, start_screen_rect)
 
+        #this gon be where the flag button appears
+        if start_screen_click == True:
             screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+            screen.blit(gas, gas_rect)
             screen.blit(map, map_rect)
             screen.blit(player, player_rect)
+            starter_screen = False
+            screen.blit(door, door_rect)
+            # put something here that will set start_flag_clicked to true once clicked
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if screen.blit(door, door_rect).collidepoint(pos):
+                    first_start_flag_clicked = True
 
-            if not key_found:
-                screen.blit(key, key_rect)
-                screen.blit(door, door_rect)
+        #this is where the fun begins (the game)
+        if first_start_flag_clicked == True:
+                count = 0
+                screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+                screen.blit(map, map_rect)
+                screen.blit(player, player_rect)
+                screen.blit(gas, gas_rect)
+                screen.blit(level_1_hint, (300,600))
+                if pixel_collision(player_mask, player_rect, map_mask, map_rect):
+                    print("colliding", frame_count)  # Don't leave this in the game
+                    count += 1
+                    is_game_over = True
+                if is_game_over == True:
+                        screen.blit(game_over_screen, game_over_screen_rect)
 
-            if pixel_collision(player_mask, player_rect, map_mask, map_rect):
-                print("colliding", frame_count) # Don't leave this in the game
-                is_game_over = True
+                if pixel_collision(player_mask, player_rect, gas_mask, gas_rect):
+                    touch_gas = True
 
-            if not key_found and pixel_collision(player_mask, player_rect, key_mask, key_rect):
-                key_found = True
-                print("colliding with key")
-
-            if is_game_over == True:
-                is_game_over = True
-                screen.blit(game_over_screen, game_over_screen_rect)
-
-
-
+                if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect):
+                    print("congrats! You've passed the first level")
+                    start_flag_clicked1 = False
+                    second_level = True
+                #don't even touch this code till you've finished stuff above level 1
+                if second_level  == True:
+                    screen.fill((0, 0, 0))  # This helps check if the image path is transparent
+                    screen.blit(map2, map2_rect)
+                    screen.blit(player, player_rect)
+                    screen.blit(door, door_rect)
+                    # put something here that will set start_flag_clicked to true once clicked
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        if screen.blit(door, door_rect).collidepoint(pos):
+                            second_start_flag_clicked = True
+                        if second_start_flag_clicked == True:
+                            break
+                    # if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
+                    #     print("colliding", frame_count)
+                    #     is_game_over = True
+                    #     if is_game_over == True:
+                    #         screen.blit(game_over_screen, game_over_screen_rect)
+                        # if pixel_collision(player_mask, player_rect, FINISHLINE, FINISHLINE_RECT)
+                    #     print('congrats! You've passed the third level')
+                    #     third_level = true:
+                if third_level == True:
+                    pass
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True
+        if touch_gas == True:
+            screen.blit(finish_line, finish_line_rect)
+            gas.kill()
+
 
 
         # Draw the background
@@ -152,8 +225,9 @@ def main():
         #     screen.blit(key, key_rect)
         #     screen.blit(door, door_rect)
 
-        if not start_screen_click:
-            screen.blit(start_screen, start_screen_rect)
+        # og start screen
+        # if not start_screen_click:
+        #     screen.blit(start_screen, start_screen_rect)
         # if start_screen_click:
 
 
@@ -161,6 +235,7 @@ def main():
         label = myfont.render("By Luke and Derek!", True, (255,255,0))
         screen.blit(label, (20,20))
 
+        level_1_hint = myfont.render("hint:collect the gas and then finish the race!", True, (0,0,0))
         # Every time through the loop, increase the frame count.
         frame_count += 1
 

@@ -1,6 +1,7 @@
 import sys, pygame, math
-
 # Starter code for an adventure game. Written by David Johnson for CS 1400 University of Utah.
+
+
 
 # Finished game authors:Luke Witzel and Derek Tinoco
 #
