@@ -78,9 +78,9 @@ def main():
     door_mask = pygame.mask.from_surface(door)
     #cement
     cement = pygame.image.load("cement.png").convert_alpha()
-    cement = pygame.transform.smoothscale(cement, (50, 50))
+    cement = pygame.transform.smoothscale(cement, (100, 100))
     cement_rect = cement.get_rect()
-    cement_rect.center = (400, 500)
+    cement_rect.center = (350, 530)
     cement_mask = pygame.mask.from_surface(cement)
     #oil
     oil = pygame.image.load("oil.png").convert_alpha()
@@ -186,9 +186,9 @@ def main():
                 screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                 screen.blit(map, map_rect)
                 screen.blit(player, player_rect)
+                screen.blit(level_1_hint, (300, 600))
                 if touch_gas == False:
                     screen.blit(gas, gas_rect)
-                screen.blit(level_1_hint, (300,600))
                 if pixel_collision(player_mask, player_rect, map_mask, map_rect):
                     is_game_over = True
                 if is_game_over == True:
@@ -223,11 +223,11 @@ def main():
                     screen.blit(map2, map2_rect)
                     screen.blit(oil, oil_rect)
                     screen.blit(player, player_rect)
+                    screen.blit(level_2_hint, (300, 650))
                     if touch_cement == False:
                         screen.blit(cement, cement_rect)
-                    screen.blit(level_2_hint, (300, 600))
-                    if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
-                        is_game_over = True
+                        if pixel_collision(player_mask, player_rect, map2_mask, map2_rect):
+                            is_game_over = True
                     if not touch_cement:
                         if pixel_collision(player_mask, player_rect, oil_mask, oil_rect):
                             is_game_over = True
@@ -281,7 +281,7 @@ def main():
         screen.blit(label, (20,20))
 
         level_1_hint = myfont.render("hint:collect the gas and then finish the race!", True, (0,0,0))
-        level_2_hint = myfont.render("hint:cement dust soaks up oil! ", True, (0, 0, 0))
+        level_2_hint = myfont.render("hint:cement dust can soak up oil!", True, (0,0,0))
         # Every time through the loop, increase the frame count.
         frame_count += 1
 
