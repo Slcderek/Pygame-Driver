@@ -171,7 +171,7 @@ def main():
     touch_cement = False
     touch_trophy = False
     touch_unscrambler = False
-
+    game_won = False
     while is_alive:
         # Check events by looping over the list of events
         for event in pygame.event.get():
@@ -289,13 +289,14 @@ def main():
             if touch_unscrambler == True:
                 screen.blit(map3, map3_rect)
                 screen.blit(player, player_rect)
+                screen.blit(level_4_hint, (300, 650))
             if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
                 is_game_over = True
                 touch_trophy = None
             if pixel_collision(player_mask, player_rect, finish_line_mask,
                 finish_line_rect) and is_game_over == False:
                 print("congrats! You've passed all the levels")
-
+            game_won = True
             # if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
             #     is_game_over = True
             #     touch_trophy = None
@@ -318,7 +319,8 @@ def main():
         #game over code here
         if is_game_over == True:
             screen.blit(game_over_screen, game_over_screen_rect)
-
+        if is_game_won == True:
+            screen.blit(game_won_screen, game_won_screen_rect)
 
 
         # Write some text to the screen. You can do something like this to show some hints or whatever you want.
