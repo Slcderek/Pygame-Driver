@@ -301,10 +301,10 @@ def main():
             #     touch_trophy = None
             if screen.blit(unscrambler, unscrambler_rect).collidepoint(pos) and is_game_over == False:
                 touch_unscrambler = True
-
+        #code below checks if the game has started
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True
-        #below are the objectives
+        #below are the objectives for the levels
         if touch_gas == True:
             screen.blit(finish_line, finish_line_rect)
         if touch_cement == True:
@@ -329,6 +329,7 @@ def main():
         level_2_hint = myfont.render("hint:cement dust can soak up oil!", True, (0,0,0))
         level_3_hint = myfont.render("hint:The map must be unscrambled before it can be won\n but get to safety after driving over the button", True, (255, 255, 255))
         level_4_hint = myfont.render("hint:Take what is rightfully yours and \n win the game!", True, (255, 255, 255))
+
         # Every time through the loop, increase the frame count.
         frame_count += 1
 
