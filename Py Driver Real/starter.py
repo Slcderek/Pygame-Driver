@@ -1,11 +1,6 @@
-import sys, pygame, math
+import sys, pygame, time
 # Starter code for an adventure game. Written by David Johnson for CS 1400 University of Utah.
-
-
-
 # Finished game authors:Luke Witzel and Derek Tinoco
-#
-#
 
 def pixel_collision(mask1, rect1, mask2, rect2):
     """
@@ -16,8 +11,6 @@ def pixel_collision(mask1, rect1, mask2, rect2):
     # See if the two masks at the offset are overlapping.
     overlap = mask1.overlap(mask2, (offset_x, offset_y))
     return overlap != None
-
-# def level1
 
 def main():
 
@@ -55,11 +48,22 @@ def main():
     map3.set_colorkey((0, 0, 0))
     map3_mask = pygame.mask.from_surface(map3)
 
+    #map 4
+    map4 = pygame.image.load("background4.png")
+    # Store window width and height in different forms for easy access
+    map4_size = map4.get_size()
+    map4_rect = map4.get_rect()
+    screen = pygame.display.set_mode(map2_size)
+    map4 = map4.convert_alpha()
+    map4.set_colorkey((0, 0, 0))
+    map4_mask = pygame.mask.from_surface(map4)
+
     # Create the player data
     player = pygame.image.load("racecar.png").convert_alpha()
     player = pygame.transform.smoothscale(player, (50, 50))
     player_rect = player.get_rect()
     player_mask = pygame.mask.from_surface(player)
+
     #safetycar data
     safety_car = pygame.image.load("safetycar.png").convert_alpha()
     safety_car = pygame.transform.smoothscale(player, (50, 50))
@@ -92,12 +96,21 @@ def main():
     cement_rect = cement.get_rect()
     cement_rect.center = (350, 530)
     cement_mask = pygame.mask.from_surface(cement)
+
     #creates the oil
     oil = pygame.image.load("oil.png").convert_alpha()
     oil = pygame.transform.smoothscale(oil, (100, 100))
     oil_rect = oil.get_rect()
     oil_rect.center = (640, 550)
     oil_mask = pygame.mask.from_surface(oil)
+
+    # creates the unscrambler
+    unscrambler = pygame.image.load("unscrambler.png").convert_alpha()
+    unscrambler = pygame.transform.smoothscale(unscrambler, (100, 100))
+    unscrambler_rect = unscrambler.get_rect()
+    unscrambler_rect.center = (640, 550)
+    unscrambler_mask = pygame.mask.from_surface(unscrambler)
+
     #Creates the finish line
     finish_line = pygame.image.load("finishline.png").convert_alpha()
     finish_line = pygame.transform.smoothscale(finish_line, (100, 100))
@@ -115,6 +128,7 @@ def main():
     # The frame tells which sprite frame to draw
     frame_count = 0
 
+    #game over screen
     game_over_screen = pygame.image.load("gameover.png")
     game_over_screen_rect = game_over_screen.get_rect()
     game_over_screen = game_over_screen.convert_alpha()
@@ -156,6 +170,7 @@ def main():
     touch_gas = False
     touch_cement = False
     touch_trophy = False
+    touch_unscrambler = False
 
     while is_alive:
         # Check events by looping over the list of events
@@ -267,16 +282,24 @@ def main():
         if third_level == True:
             start_screen_click = False
             screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-            screen.blit(map3, map3_rect)
+            screen.blit(map4, map4_rect)
             screen.blit(oil, oil_rect)
             screen.blit(player, player_rect)
             screen.blit(level_3_hint, (300, 650))
             if touch_trophy == False:
                 screen.blit(key, key_rect)
-
-            if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
-                is_game_over = True
-                touch_trophy = None
+            if touch_unscrambler == False:
+                screen.blit(unscrambler, unscrambler_rect)
+            if touch_unscrambler == True:
+                screen.blit(map3, map3_rect)
+                if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
+                    is_game_over = True
+                    touch_trophy = None
+            # if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
+            #     is_game_over = True
+            #     touch_trophy = None
+            if screen.blit(unscrambler, unscrambler_rect).collidepoint(pos) and is_game_over == False:
+                touch_unscrambler = True
             if pixel_collision(player_mask, player_rect, finish_line_mask, finish_line_rect) and is_game_over == False:
                 print("congrats! You've passed all the levels")
 
@@ -289,6 +312,12 @@ def main():
             screen.blit(finish_line, finish_line_rect)
         if touch_trophy == True:
             screen.blit(finish_line, finish_line_rect)
+        if touch_unscrambler == True:
+            screen.blit(map3, map3_rect)
+            time.sleep(3)
+            if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
+                is_game_over = True
+                touch_trophy = None
 
 
 
@@ -314,7 +343,8 @@ def main():
 
         level_1_hint = myfont.render("hint:collect the gas and then finish the race!", True, (0,0,0))
         level_2_hint = myfont.render("hint:cement dust can soak up oil!", True, (0,0,0))
-        level_3_hint = myfont.render("hint:Take what is rightfully yours and \n win the game!", True, (255, 255, 255))
+        level_3_hint = myfont.render("hint:The map must be unscrambled before being played\n but get to safety after driving over the button", True, (255, 255, 255))
+        level_4_hint = myfont.render("hint:Take what is rightfully yours and \n win the game!", True, (255, 255, 255))
         # Every time through the loop, increase the frame count.
         frame_count += 1
 
