@@ -163,15 +163,14 @@ def main():
 
         #this is where the fun begins (the game)
         if first_start_flag_clicked == True:
-                count = 0
                 screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                 screen.blit(map, map_rect)
                 screen.blit(player, player_rect)
-                screen.blit(gas, gas_rect)
+                if touch_gas == False:
+                    screen.blit(gas, gas_rect)
                 screen.blit(level_1_hint, (300,600))
                 if pixel_collision(player_mask, player_rect, map_mask, map_rect):
                     print("colliding", frame_count)  # Don't leave this in the game
-                    count += 1
                     is_game_over = True
                 if is_game_over == True:
                         screen.blit(game_over_screen, game_over_screen_rect)
@@ -185,6 +184,7 @@ def main():
                     second_level = True
                 #don't even touch this code till you've finished stuff above level 1
                 if second_level  == True:
+                    touch_gas = False
                     screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                     screen.blit(map2, map2_rect)
                     screen.blit(player, player_rect)
@@ -211,7 +211,6 @@ def main():
             start_screen_click = True
         if touch_gas == True:
             screen.blit(finish_line, finish_line_rect)
-            gas.kill()
 
 
 
