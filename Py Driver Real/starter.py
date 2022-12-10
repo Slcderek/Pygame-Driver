@@ -64,12 +64,6 @@ def main():
     player_rect = player.get_rect()
     player_mask = pygame.mask.from_surface(player)
 
-    #safetycar data
-    safety_car = pygame.image.load("safetycar.png").convert_alpha()
-    safety_car = pygame.transform.smoothscale(player, (50, 50))
-    safety_car_rect = safety_car.get_rect()
-    safety_car_mask = pygame.mask.from_surface(safety_car)
-
     # gas data
     gas = pygame.image.load("gas.png").convert_alpha()
     gas = pygame.transform.smoothscale(gas,(35,35))
@@ -134,7 +128,12 @@ def main():
     game_over_screen = game_over_screen.convert_alpha()
     game_over_screen = pygame.transform.smoothscale(game_over_screen, (map_size))
     game_over_screen_mask = pygame.mask.from_surface(game_over_screen)
-
+    #game won screen
+    game_won_screen = pygame.image.load("gamewon.png")
+    game_won_screen_rect = game_won_screen.get_rect()
+    game_won_screen = game_won_screen.convert_alpha()
+    game_won_screen = pygame.transform.smoothscale(game_won_screen, (map_size))
+    game_won_screen_mask = pygame.mask.from_surface(game_won_screen)
 
 
     starter_screen = True
@@ -171,7 +170,7 @@ def main():
     touch_cement = False
     touch_trophy = False
     touch_unscrambler = False
-    game_won = False
+    is_game_won = False
     while is_alive:
         # Check events by looping over the list of events
         for event in pygame.event.get():
@@ -190,7 +189,7 @@ def main():
             if not start_screen_click:
                 screen.blit(start_screen, start_screen_rect)
 
-        #this gon be where the flag button appears
+        #this is where the flag button appears
         if start_screen_click == True:
             screen.fill((0, 0, 0))  # This helps check if the image path is transparent
             screen.blit(gas, gas_rect)
@@ -204,7 +203,7 @@ def main():
                 if screen.blit(starter_flag, starter_flag_rect).collidepoint(pos):
                     first_starter_flag_clicked = True
 
-        #this is where the fun begins (the game)
+        #this is where the game will actually begin.
         if first_starter_flag_clicked == True:
                 screen.fill((0, 0, 0))  # This helps check if the image path is transparent
                 screen.blit(map, map_rect)
@@ -237,6 +236,7 @@ def main():
                         if screen.blit(starter_flag, starter_flag_rect).collidepoint(pos):
                             second_level = True
                             touch_gas = None
+        #checks if the second level has started yet, only after flag is clicked
         if second_level == True:
                     start_screen_click = False
                     screen.fill((0, 0, 0))  # This helps check if the image path is transparent
@@ -276,11 +276,10 @@ def main():
                 if screen.blit(starter_flag, starter_flag_rect).collidepoint(pos):
                     third_level = True
 
-
+        #sets the transparency and the stage
         if third_level == True:
             start_screen_click = False
-            screen.fill((0, 0, 0))  # This helps check if the image path is transparent
-            # screen.blit(map3, map3_rect)
+            screen.fill((0, 0, 0))
             screen.blit(player, player_rect)
             screen.blit(level_3_hint, (300, 650))
             if touch_unscrambler == False:
@@ -296,7 +295,7 @@ def main():
             if pixel_collision(player_mask, player_rect, finish_line_mask,
                 finish_line_rect) and is_game_over == False:
                 print("congrats! You've passed all the levels")
-            game_won = True
+                is_game_won = True
             # if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
             #     is_game_over = True
             #     touch_trophy = None
@@ -329,7 +328,7 @@ def main():
 
         level_1_hint = myfont.render("hint:collect the gas and then finish the race!", True, (0,0,0))
         level_2_hint = myfont.render("hint:cement dust can soak up oil!", True, (0,0,0))
-        level_3_hint = myfont.render("hint:The map must be unscrambled before it can be won\n but get to safety after driving over the button", True, (255, 255, 255))
+        level_3_hint = myfont.render("hint:The map must be unscrambled before it can be won", True, (255, 255, 255))
         level_4_hint = myfont.render("hint:Take what is rightfully yours and \n win the game!", True, (255, 255, 255))
 
         # Every time through the loop, increase the frame count.
