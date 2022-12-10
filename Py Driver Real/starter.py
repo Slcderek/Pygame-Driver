@@ -16,7 +16,7 @@ def main():
 
     # Initialize pygame
     pygame.init()
-
+    #create the first map here
     map = pygame.image.load("background1.png")
     # Store window width and height in different forms for easy access
     map_size = map.get_size()
@@ -95,7 +95,7 @@ def main():
     oil = pygame.image.load("oil.png").convert_alpha()
     oil = pygame.transform.smoothscale(oil, (70, 70))
     oil_rect = oil.get_rect()
-    oil_rect.center = (630, 550)
+    oil_rect.center = (630, 580)
     oil_mask = pygame.mask.from_surface(oil)
 
     # creates the unscrambler
@@ -281,29 +281,29 @@ def main():
             start_screen_click = False
             screen.fill((0, 0, 0))
             screen.blit(player, player_rect)
-            screen.blit(level_3_hint, (300, 650))
             if touch_unscrambler == False:
                 screen.blit(map4, map4_rect)
                 screen.blit(unscrambler, unscrambler_rect)
+                screen.blit(level_3_hint, (300, 650))
             if touch_unscrambler == True:
                 screen.blit(map3, map3_rect)
                 screen.blit(player, player_rect)
                 screen.blit(level_4_hint, (300, 650))
-            if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
-                is_game_over = True
-                touch_trophy = None
+                if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
+                    is_game_over = True
+                    touch_trophy = None
+                    third_level = False
             if pixel_collision(player_mask, player_rect, finish_line_mask,
                 finish_line_rect) and is_game_over == False:
                 print("congrats! You've passed all the levels")
                 is_game_won = True
-            # if pixel_collision(player_mask, player_rect, map3_mask, map3_rect):
-            #     is_game_over = True
-            #     touch_trophy = None
             if screen.blit(unscrambler, unscrambler_rect).collidepoint(pos) and is_game_over == False:
                 touch_unscrambler = True
+
         #code below checks if the game has started
         if event.type == pygame.MOUSEBUTTONDOWN:
             start_screen_click = True
+
         #below are the objectives for the levels
         if touch_gas == True:
             screen.blit(finish_line, finish_line_rect)
@@ -329,7 +329,7 @@ def main():
         level_1_hint = myfont.render("hint:collect the gas and then finish the race!", True, (0,0,0))
         level_2_hint = myfont.render("hint:cement dust can soak up oil!", True, (0,0,0))
         level_3_hint = myfont.render("hint:The map must be unscrambled before it can be won", True, (255, 255, 255))
-        level_4_hint = myfont.render("hint:Take what is rightfully yours and \n win the game!", True, (255, 255, 255))
+        level_4_hint = myfont.render("hint:Take what is rightfully yours and \n win the game \n (replayable)!", True, (255, 255, 255))
 
         # Every time through the loop, increase the frame count.
         frame_count += 1
